@@ -1,11 +1,12 @@
 
 def redraw():
-	print ("======================")
+	print ("=================")
 	print ("	"+loc[0]+"|"+loc[1]+"|"+loc[2]+"")
 	print ("   -------------")
 	print ("	"+loc[3]+"|"+loc[4]+"|"+loc[5]+"")
 	print ("   -------------")
 	print ("	"+loc[6]+"|"+loc[7]+"|"+loc[8]+"")
+	print ("=================")
 loc = ['1','2','3','4','5','6','7','8','9']
 
 def check_win(loc):
@@ -31,53 +32,88 @@ def check_win(loc):
 	else : 
 		return 'None'	
 
+def isoccupied(loc , position):
+	if ( (position > 9 or position < 0  )):
+		return False
+	if ( (loc[position] == 'X') or (loc[position] =='O')):
+		return True
+	else :
+		return False	
 def handel_choice(player, choice):
-	if (not(choice > 9 or choice < 0  )):
-		print ('Wrong Choice')
-
+	if (not (choice > 9 or choice < 0  )):
+		if (loc[choice] =='X' or loc[choice] =='O'):
+			print("Reserver Location Please Try Another Location ")
+			return "RL"
 		if (player == 'player_1'):
 			loc[choice] = 'X'
-	   
+	   	
+
 		elif(player == 'player_2') :
 	   		loc[choice] = 'O'	
 		else :
-			print ('Error')   				  						
-
+			print ('Error')
+	else :
+		print("Wrong Location")   				  						
+			
+play ='p1'
 redraw()
 
 turn = 0 
-
+chice = 0 
 while (turn < 9) :
-	print ("Player 1  :")
-	p1c = int(input('Make Choice please  : '))
-	choice = p1c -1
-	turn = turn+1
-	print ("the turn now is "+str(turn))
-	handel_choice('player_1', choice)
-	redraw()
+	while (play ==  'p1') :
+		print ("Player 1  :")
+		choice = int(input('Make Choice please  : ')) - 1 
+		if (isoccupied(loc , choice)):
+			play = 'p1'
+		else :
+			handel_choice('player_1', choice)
+			play = 'p2'
+		
+		
+		
 
+		redraw()
+	turn = turn+1
+
+
+	
+    
 	if (check_win(loc) == 'Player_1') :
-		print(' ---------- Playe 1 Won ----------')
+		print('************ Playe 1 Won ***********')
 		redraw()
 		break
 	elif(check_win(loc) == 'Player_2') :
-		print(' ---------- Playe 2 Won ----------')
+		print(' *********** Playe 2 Won **********')
 		redraw()
 		break	
 
 	if (turn == 9) :
-		print('---------- Draw ----------')
+		print('************** Draw ***************')
 		break
 
-
-	print ("Player 2  :")
-	p2c = int(input('Make Choice please  : '))
-	choice = p2c -1
+	while (play ==  'p2') :	
+		print ("Player 2  :")
+		choice = int(input('Make Choice please  : ')) - 1 
+		if (isoccupied(loc , choice)):
+			play = 'p2'
+		else :
+			handel_choice('player_2', choice)
+			play = 'p1'	
+		redraw()
 	turn = turn+1
-	print ("the tuen now is "+str(turn))
-	handel_choice('player_2', choice)
-	redraw()
 
-	check_win(loc)
+	if (check_win(loc) == 'Player_1') :
+		print('************ Playe 1 Won ***********')
+		redraw()
+		break
+	elif(check_win(loc) == 'Player_2') :
+		print(' *********** Playe 2 Won **********')
+		redraw()
+		break	
+
+	if (turn == 9) :
+		print('************** Draw ***************')
+		break
 
 
